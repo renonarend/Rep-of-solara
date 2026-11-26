@@ -36,11 +36,11 @@
 </head>
 <body class="bg-solara-black text-white font-sans antialiased selection:bg-solara-gold selection:text-black min-h-screen flex flex-col">
 
-    <!-- Navbar Minimalis (Tanpa Teks Nama Klub agar tidak dobel dengan logo) -->
+    <!-- Navbar Minimalis -->
     <header class="sticky top-0 z-40 bg-solara-black/95 border-b border-solara-borderDark">
         <nav class="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-            <a href="#" aria-label="Beranda" class="inline-flex items-center justify-center p-2 rounded-lg text-solara-gold hover:text-solara-goldLight transition-colors">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <a href="#" aria-label="Beranda" class="inline-flex items-center gap-2 p-2 rounded-lg text-solara-gold hover:text-solara-goldLight transition-colors">
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
                 </svg>
                 <!-- UBAH TEKS SAMPING BINTANG KIRI ATAS DI SINI -->
@@ -48,9 +48,10 @@
                    SOLARA CLUB
                 </span>
             </a>
-            <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm font-medium text-neutral-300">
-                <a href="#anggota" class="px-3 py-2 rounded-lg hover:text-solara-gold transition-colors">Anggota</a>
-                <a href="#leaderboard" class="px-3 py-2 rounded-lg hover:text-solara-gold transition-colors">Leaderboard</a>
+            <div class="flex items-center gap-1 sm:gap-3 text-xs sm:text-sm font-medium text-neutral-300">
+                <a href="#anggota" class="px-2.5 py-2 rounded-lg hover:text-solara-gold transition-colors">Anggota</a>
+                <a href="#leaderboard" class="px-2.5 py-2 rounded-lg hover:text-solara-gold transition-colors">Leaderboard</a>
+                <a href="#syarat-ketentuan" class="px-2.5 py-2 rounded-lg hover:text-solara-gold transition-colors">S&amp;K</a>
             </div>
         </nav>
     </header>
@@ -155,6 +156,23 @@
             </div>
         </section>
 
+        <!-- Section 3: Syarat & Ketentuan -->
+        <section id="syarat-ketentuan" class="space-y-5 scroll-mt-20">
+            <div class="border-b border-solara-borderDark pb-4">
+                <h2 class="font-serif text-lg sm:text-xl font-bold tracking-wider uppercase text-white">
+                    Syarat &amp; Ketentuan
+                </h2>
+                <p class="text-xs sm:text-sm text-neutral-400 mt-1">
+                    Aturan wajib bagi seluruh anggota &amp; calon anggota klub
+                </p>
+            </div>
+
+            <!-- List Syarat & Ketentuan (Di-render via JS dari konfigurasi termsAndConditions) -->
+            <div class="p-5 sm:p-6 rounded-2xl bg-solara-card border border-solara-borderDark">
+                <ol id="termsList" class="space-y-3.5 text-xs sm:text-sm text-neutral-300"></ol>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer Minimalis (Tanpa Teks Nama Klub agar bersih) -->
@@ -231,6 +249,16 @@
                 }
             ];
 
+            // =================================================================
+            // 4. KONFIGURASI SYARAT & KETENTUAN
+            // =================================================================
+            const termsAndConditions = [
+                "Mampu bekerja sama dengan baik dalam tim.",
+                "Tidak merasa diri paling jago — semua anggota memiliki level dan posisi yang setara.",
+                "Menguasai dasar permainan defense dan attack secara seimbang.",
+                "Siap mengikuti arahan dan strategi dari leader."
+            ];
+
             function renderSolaraClub() {
                 const totalSlots = squadRoster.length;
                 const filledCount = squadRoster.filter(member => member && member.name && member.name.trim() !== "").length;
@@ -243,6 +271,7 @@
                 const rosterBadge = document.getElementById("rosterBadge");
                 const rosterGrid = document.getElementById("rosterGrid");
                 const leaderboardList = document.getElementById("leaderboardList");
+                const termsList = document.getElementById("termsList");
 
                 // Update tombol WhatsApp di banner
                 if (bannerWaBtn) {
@@ -452,6 +481,24 @@
                         }
                     });
                     leaderboardList.innerHTML = leaderboardHTML;
+                }
+
+                // Render Syarat & Ketentuan
+                if (termsList) {
+                    let termsHTML = "";
+                    termsAndConditions.forEach((rule, index) => {
+                        if (rule && rule.trim() !== "") {
+                            termsHTML += `
+                                <li class="flex items-start gap-3">
+                                    <span class="w-6 h-6 rounded-lg bg-solara-gold/10 border border-solara-gold/30 text-solara-gold font-serif font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                                        ${index + 1}
+                                    </span>
+                                    <span class="leading-relaxed text-neutral-300">${rule}</span>
+                                </li>
+                            `;
+                        }
+                    });
+                    termsList.innerHTML = termsHTML;
                 }
             }
 
