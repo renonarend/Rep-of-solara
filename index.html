@@ -148,28 +148,55 @@
     </footer>
 
     <!-- =====================================================================
-         SCRIPT PENGATURAN DATA & RENDER OTOMATIS (ANTI-BLANK & RINGAN)
+         SCRIPT PENGATURAN DATA & RENDER OTOMATIS (KONFIGURASI TERPISAH)
          ===================================================================== -->
     <script>
         (function () {
-            // 1. KONFIGURASI UTAMA KLUB
+            // 1. KONFIGURASI NOMOR WHATSAPP
             const whatsappNumber = "6281932421812";
             const waMessage = "Halo Reno, gw mau daftar gabung klub Republic of Solara!";
             const waLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waMessage)}`;
 
-            // 2. DAFTAR ANGGOTA & PERINGKAT TOP 1-4
-            //    Ganti `null` dengan nama anggota baru pakai tanda kutip, contoh: ["Reno", "Nathan", "Dimas", null]
-            //    Jika keempatnya sudah terisi nama, banner "DICARI ANGGOTA!" dan badge "Open Recruitment" otomatis hilang.
-            const members = [
-                "Nathan",   // Top 1
-                "Reno", // Top 2
-                null,     // Slot 3 (Kosong)
-                null      // Slot 4 (Kosong)
+            // 2. KONFIGURASI SQUAD ROSTER (4 SLOT ANGGOTA + DESKRIPSI)
+            //    - Isi dengan object { name, role, desc } kalau slot sudah terisi.
+            //    - Isi dengan `null` kalau slot masih kosong (otomatis menghitung sisa slot di banner "DICARI ANGGOTA!").
+            const squadRoster = [
+                {
+                    name: "Reno",
+                    role: "Captain • All-Rounder",
+                    desc: "Kontrol tempo permainan, smash tajam, dan pengatur ritme di lapangan."
+                },
+                {
+                    name: "Nathan",
+                    role: "Core • Netting & Speed",
+                    desc: "Refleks cepat di depan net dengan penempatan bola akurat."
+                },
+                null, // Slot 3 (Kosong) -> Ganti null dengan { name: "...", role: "...", desc: "..." }
+                null  // Slot 4 (Kosong) -> Ganti null dengan { name: "...", role: "...", desc: "..." }
+            ];
+
+            // 3. KONFIGURASI TOP LEADERBOARD (TERPISAH DARI ROSTER, BEBAS ATUR URUTAN TOP 1 - 4)
+            //    - Isi dengan object { rank, name, note } untuk peringkat yang sudah terisi.
+            //    - Isi dengan `null` jika peringkat tersebut masih belum terisi.
+            const leaderboardData = [
+                {
+                    rank: 1,
+                    name: "Reno",
+                    note: "Peringkat 1 Klub • Ace Player"
+                },
+                {
+                    rank: 2,
+                    name: "Nathan",
+                    note: "Peringkat 2 Klub • Core Player"
+                },
+                null, // Top 3 (Belum terisi) -> Ganti null dengan { rank: 3, name: "...", note: "..." }
+                null  // Top 4 (Belum terisi) -> Ganti null dengan { rank: 4, name: "...", note: "..." }
             ];
 
             function renderSolaraClub() {
-                const totalSlots = members.length;
-                const filledCount = members.filter(member => member !== null && member.trim() !== "").length;
+                // Hitung slot terisi & kosong berdasarkan `squadRoster`
+                const totalSlots = squadRoster.length;
+                const filledCount = squadRoster.filter(member => member && member.name && member.name.trim() !== "").length;
                 const emptyCount = totalSlots - filledCount;
 
                 // Elemen DOM
@@ -191,7 +218,7 @@
                     rosterSubtitle.textContent = `Formasi resmi anggota Republic of Solara (${filledCount}/${totalSlots} Terisi)`;
                 }
 
-                // Tampilkan atau Sembunyikan Banner Rekrutmen & Badge
+                // Tampilkan atau Sembunyikan Banner Rekrutmen & Badge secara dinamis
                 if (emptyCount > 0) {
                     if (recruitmentBanner) recruitmentBanner.classList.remove("hidden");
                     if (recruitmentText) {
@@ -206,34 +233,44 @@
                     if (rosterBadge) rosterBadge.classList.add("hidden");
                 }
 
-                // Render Kartu Squad Roster (4 Slot)
+                // Render Kartu Squad Roster (4 Slot) beserta Role & Deskripsi
                 if (rosterGrid) {
                     let rosterHTML = "";
-                    members.forEach((name, index) => {
+                    squadRoster.forEach((member, index) => {
                         const slotNum = index + 1;
-                        const isFilled = name !== null && name.trim() !== "";
+                        const isFilled = member && member.name && member.name.trim() !== "";
 
                         if (isFilled) {
                             const isCaptain = index === 0;
+                            const roleText = member.role && member.role.trim() !== "" ? member.role : "Squad Member";
+                            const descText = member.desc && member.desc.trim() !== "" ? member.desc : "";
+
                             rosterHTML += `
-                                <div class="p-4 sm:p-5 rounded-2xl bg-solara-card border ${isCaptain ? 'border-solara-gold/50' : 'border-solara-borderDark'} flex items-center justify-between gap-3">
-                                    <div class="flex items-center gap-3.5 min-w-0">
-                                        <div class="w-11 h-11 rounded-xl ${isCaptain ? 'bg-solara-gold text-black' : 'bg-neutral-900 text-solara-gold border border-solara-borderGold'} font-serif font-bold text-base flex items-center justify-center shrink-0">
-                                            ${name.charAt(0).toUpperCase()}
+                                <div class="p-4 sm:p-5 rounded-2xl bg-solara-card border ${isCaptain ? 'border-solara-gold/50' : 'border-solara-borderDark'} flex flex-col justify-between gap-3.5">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div class="flex items-center gap-3.5 min-w-0">
+                                            <div class="w-11 h-11 rounded-xl ${isCaptain ? 'bg-solara-gold text-black' : 'bg-neutral-900 text-solara-gold border border-solara-borderGold'} font-serif font-bold text-base flex items-center justify-center shrink-0">
+                                                ${member.name.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div class="min-w-0">
+                                                <span class="text-[11px] font-semibold uppercase tracking-wider text-solara-gold/90 block truncate">
+                                                    Slot #${slotNum} • ${roleText}
+                                                </span>
+                                                <h3 class="text-base sm:text-lg font-bold text-white truncate mt-0.5">
+                                                    ${member.name}
+                                                </h3>
+                                            </div>
                                         </div>
-                                        <div class="min-w-0">
-                                            <span class="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 block">
-                                                Slot #${slotNum}${isCaptain ? ' • Captain' : ''}
-                                            </span>
-                                            <h3 class="text-base sm:text-lg font-bold text-white truncate">
-                                                ${name}
-                                            </h3>
-                                        </div>
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-semibold shrink-0">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                                            Aktif
+                                        </span>
                                     </div>
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-semibold shrink-0">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                        Aktif
-                                    </span>
+                                    ${descText ? `
+                                        <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed border-t border-solara-borderDark pt-3">
+                                            ${descText}
+                                        </p>
+                                    ` : ''}
                                 </div>
                             `;
                         } else {
@@ -250,10 +287,11 @@
                                             <h3 class="text-base sm:text-lg font-semibold text-neutral-400 group-hover:text-white transition-colors truncate">
                                                 Slot Kosong
                                             </h3>
+                                            <p class="text-xs text-neutral-600 mt-0.5 truncate">Terbuka untuk pemain baru</p>
                                         </div>
                                     </div>
                                     <span class="text-xs font-bold text-solara-gold group-hover:text-solara-goldLight shrink-0">
-                                        + Daftar Sekarang
+                                        + Daftar
                                     </span>
                                 </a>
                             `;
@@ -262,12 +300,12 @@
                     rosterGrid.innerHTML = rosterHTML;
                 }
 
-                // Render Top Leaderboard (Rank 1 - 4)
+                // Render Top Leaderboard (Rank 1 - 4) secara independen dari `leaderboardData`
                 if (leaderboardList) {
                     let leaderboardHTML = "";
-                    members.forEach((name, index) => {
-                        const rank = index + 1;
-                        const isFilled = name !== null && name.trim() !== "";
+                    leaderboardData.forEach((entry, index) => {
+                        const rank = entry && entry.rank ? entry.rank : index + 1;
+                        const isFilled = entry && entry.name && entry.name.trim() !== "";
 
                         // Gaya Lencana Rank 1, 2, dan 3-4
                         let rankBadgeHTML = "";
@@ -295,15 +333,15 @@
                         }
 
                         if (isFilled) {
+                            const noteText = entry.note && entry.note.trim() !== "" ? entry.note : `Peringkat ${rank} Klub`;
+
                             leaderboardHTML += `
                                 <div class="px-4 sm:px-6 py-4 flex items-center justify-between gap-4 ${rowExtraClass}">
                                     <div class="flex items-center gap-3.5 min-w-0">
                                         ${rankBadgeHTML}
                                         <div class="min-w-0">
-                                            <p class="text-sm sm:text-base font-bold text-white truncate">${name}</p>
-                                            <p class="text-xs text-neutral-500">
-                                                ${rank === 1 ? 'Peringkat 1 Klub • Ace Player' : rank === 2 ? 'Peringkat 2 Klub • Core Player' : `Peringkat ${rank} Klub`}
-                                            </p>
+                                            <p class="text-sm sm:text-base font-bold text-white truncate">${entry.name}</p>
+                                            <p class="text-xs text-neutral-400 truncate">${noteText}</p>
                                         </div>
                                     </div>
                                     ${rank === 1 ? `
