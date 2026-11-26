@@ -199,10 +199,6 @@
 
             // =================================================================
             // 2. KONFIGURASI SQUAD ROSTER (4 SLOT ANGGOTA + PP OPSIONAL)
-            //    - avatar: Isi nama file foto (misal "reno.jpg") atau URL gambar.
-            //              Biarkan kosong ("") untuk otomatis pakai huruf inisial depan.
-            //    - Isi dengan `null` jika slot masih kosong (otomatis menghitung
-            //      sisa slot di banner atas dan menghilangkannya saat penuh 4/4).
             // =================================================================
             const squadRoster = [
                 {
@@ -222,14 +218,12 @@
                     role: "",
                     desc: "Smash tajam dan kencang",
                     avatar: "IMG-20261127-WA0003.jpg"
-                }, // Slot 3 (Kosong) -> Ganti null dengan { name: "...", role: "...", desc: "...", avatar: "" }
-                null  // Slot 4 (Kosong) -> Ganti null dengan { name: "...", role: "...", desc: "...", avatar: "" }
+                },
+                null  
             ];
 
             // =================================================================
-            // 3. KONFIGURASI TOP LEADERBOARD (TERPISAH DARI SQUAD ROSTER)
-            //    - Bebas atur urutan peringkat Top 1 - 4 dan catatan statusnya
-            //      tanpa mempengaruhi susunan kartu di Squad Roster.
+            // 3. KONFIGURASI TOP LEADERBOARD
             // =================================================================
             const leaderboardData = [
                 {
@@ -278,17 +272,14 @@
                 const leaderboardList = document.getElementById("leaderboardList");
                 const termsList = document.getElementById("termsList");
 
-                // Update tombol WhatsApp di banner
                 if (bannerWaBtn) {
                     bannerWaBtn.href = waLink;
                 }
 
-                // Update teks jumlah slot terisi
                 if (rosterSubtitle) {
                     rosterSubtitle.textContent = `Formasi resmi anggota klub (${filledCount}/${totalSlots} Terisi)`;
                 }
 
-                // Tampilkan atau sembunyikan banner "Dicari Anggota!" secara otomatis
                 if (emptyCount > 0) {
                     if (recruitmentBanner) {
                         recruitmentBanner.style.display = "block";
@@ -312,7 +303,6 @@
                     }
                 }
 
-                // Render 4 Kartu Squad Roster
                 if (rosterGrid) {
                     let rosterHTML = "";
                     squadRoster.forEach((member, index) => {
@@ -326,7 +316,6 @@
                             const roleText = member.role && member.role.trim() !== "" ? member.role : "Squad Member";
                             const descText = member.desc && member.desc.trim() !== "" ? member.desc : "";
 
-                            // Avatar lingkaran emas: pakai foto jika diisi, atau otomatis inisial huruf depan
                             const avatarHTML = hasAvatar
                                 ? `
                                     <div class="relative w-12 h-12 rounded-full border border-solara-gold overflow-hidden shrink-0 bg-neutral-900">
@@ -400,79 +389,7 @@
                     rosterGrid.innerHTML = rosterHTML;
                 }
 
-                // Render Top Leaderboard (Rank 1 - 4)
-                if (leaderboardList) {
-                    let leaderboardHTML = "";
-                    leaderboardData.forEach((entry, index) => {
-                        const rank = entry && entry.rank ? entry.rank : index + 1;
-                        const nameVal = entry && entry.name ? entry.name.trim() : "";
-                        const isEmptySlot = !nameVal || nameVal.toLowerCase() === "slot kosong";
-
-                        let rankBadgeHTML = "";
-                        let rowExtraClass = "";
-
-                        if (rank === 1) {
-                            rowExtraClass = "bg-solara-gold/[0.08]";
-                            rankBadgeHTML = `
-                                <div class="w-9 h-9 rounded-xl bg-solara-gold text-black font-serif font-extrabold text-sm flex items-center justify-center shrink-0" title="Top 1">
-                                    #1
-                                </div>
-                            `;
-                        } else if (rank === 2) {
-                            rowExtraClass = "bg-solara-gold/[0.03]";
-                            rankBadgeHTML = `
-                                <div class="w-9 h-9 rounded-xl bg-neutral-200 text-black font-serif font-extrabold text-sm flex items-center justify-center shrink-0" title="Top 2">
-                                    #2
-                                </div>
-                            `;
-                        } else if (rank === 3) {
-                            rankBadgeHTML = `
-                                <div class="w-9 h-9 rounded-xl bg-amber-800/40 border border-amber-700/50 text-amber-300 font-serif font-bold text-sm flex items-center justify-center shrink-0" title="Top 3">
-                                    #3
-                                </div>
-                            `;
-                        } else {
-                            rankBadgeHTML = `
-                                <div class="w-9 h-9 rounded-xl bg-neutral-900 border border-solara-borderDark text-neutral-400 font-serif font-bold text-sm flex items-center justify-center shrink-0">
-                                    #${rank}
-                                </div>
-                            `;
-                        }
-
-                        if (!isEmptySlot) {
-                            const noteText = entry.note && entry.note.trim() !== "" ? entry.note : `Peringkat ${rank} Klub`;
-
-                            leaderboardHTML += `
-                                <div class="px-4 sm:px-6 py-4 flex items-center justify-between gap-4 ${rowExtraClass}">
-                                    <div class="flex items-center gap-3.5 min-w-0">
-                                        ${rankBadgeHTML}
-                                        <div class="min-w-0">
-                                            <p class="text-sm sm:text-base font-bold text-white truncate">${nameVal}</p>
-                                            <p class="text-xs text-neutral-400 truncate">${noteText}</p>
-                                        </div>
-                                    </div>
-                                    ${rank === 1 ? `
-                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-solara-gold/15 border border-solara-gold/40 text-solara-goldLight text-xs font-bold shrink-0">
-                                            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                                <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.6 18.6 20 18 20H6C5.4 20 5 19.6 5 19V18H19V19Z"/>
-                                            </svg>
-                                            Top 1
-                                        </span>
-                                    ` : `
-                                        <span class="text-xs font-semibold text-neutral-400 shrink-0">
-                                            Top ${rank}
-                                        </span>
-                                    `}
-                                </div>
-                            `;
-                        } else {
-                            const noteText = entry && entry.note ? entry.note : "Menunggu penantang berikutnya";
-                            leaderboardHTML += `
-                                <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="px-4 sm:px-6 py-4 flex items-center justify-between gap-4 hover:bg-solara-cardHover transition-colors group">
-                                    <div class="flex items-center gap-3.5 min-w-0">
-                                    
-                // Render Top Leaderboard (Rank 1 - 4) + Otomatis ambil PP dari Squad Roster//
-                
+                // Render Top Leaderboard (Rank 1 - 4) + Otomatis Sinkron PP
                 if (leaderboardList) {
                     let leaderboardHTML = "";
                     leaderboardData.forEach((entry, index) => {
@@ -514,7 +431,6 @@
                         if (!isEmptySlot) {
                             const noteText = entry.note && entry.note.trim() !== "" ? entry.note : `Peringkat ${rank} Klub`;
                             
-                            // Cari data anggota di squadRoster berdasarkan nama biar PP otomatis sinkron
                             const matchedMember = squadRoster.find(
                                 m => m && m.name && m.name.trim().toLowerCase() === nameVal.toLowerCase()
                             );
@@ -523,7 +439,6 @@
                                 : (matchedMember && matchedMember.avatar ? matchedMember.avatar.trim() : "");
                             const initial = nameVal.charAt(0).toUpperCase();
 
-                            // Avatar lingkaran emas (foto atau inisial)
                             const lbAvatarHTML = avatarUrl
                                 ? `
                                     <div class="relative w-10 h-10 rounded-full border border-solara-gold overflow-hidden shrink-0 bg-neutral-900">
@@ -593,7 +508,7 @@
                     });
                     leaderboardList.innerHTML = leaderboardHTML;
                 }
-                
+
                 // Render Syarat & Ketentuan
                 if (termsList) {
                     let termsHTML = "";
