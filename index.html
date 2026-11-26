@@ -37,20 +37,17 @@
 </head>
 <body class="bg-solara-black text-white font-sans antialiased selection:bg-solara-gold/30 selection:text-solara-goldLight">
 
-    <!-- 1. Sticky Top Navbar -->
+    <!-- 1. Sticky Top Navbar (Bersih tanpa tulisan SOLARA) -->
     <nav class="sticky top-0 z-40 bg-solara-black border-b border-solara-borderGold">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2.5 group">
-                <!-- Ikon Bintang Emas -->
-                <svg class="w-4 h-4 text-solara-gold shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+            <a href="#" class="flex items-center p-1.5 group" aria-label="Kembali ke atas">
+                <!-- Ikon Bintang Emas Minimalis -->
+                <svg class="w-4 h-4 text-solara-gold group-hover:text-solara-goldLight transition-colors shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
                 </svg>
-                <span class="font-serif font-bold tracking-[0.18em] text-white text-sm sm:text-base group-hover:text-solara-goldLight transition-colors">
-                    SOLARA
-                </span>
             </a>
 
-            <div class="flex items-center gap-5 text-xs sm:text-sm font-medium text-neutral-400">
+            <div class="flex items-center gap-6 text-xs sm:text-sm font-medium text-neutral-400">
                 <a href="#anggota" class="hover:text-solara-goldLight transition-colors py-2">Anggota</a>
                 <a href="#leaderboard" class="hover:text-solara-goldLight transition-colors py-2">Leaderboard</a>
             </div>
@@ -58,68 +55,43 @@
     </nav>
 
     <!-- Main Content Container -->
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-14 sm:space-y-20">
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-14 sm:space-y-20">
 
         <!-- 2. Hero Section, Logo & Dynamic Recruitment Banner -->
         <header class="text-center space-y-6">
             
-            <!-- Tempat Logo Utama -->
+            <!-- Tempat Logo Utama (Ganti ukuran logo di class w-64 sm:w-80 di bawah ini) -->
             <div class="flex justify-center">
-                <div class="relative w-44 h-44 sm:w-56 sm:h-56 flex items-center justify-center">
+                <!-- Ganti ukuran logo di sini: ubah w-64 (HP) dan sm:w-80 (Desktop), misal jadi w-72 sm:w-96 -->
+                <div class="relative w-64 sm:w-80 flex items-center justify-center">
                     <!-- Gambar Logo Klub -->
                     <img 
                         id="clubLogoImg"
                         src="file_000000009690821189f9c36f7102a10e.png" 
                         alt="Logo Republic of Solara" 
-                        class="w-full h-full object-contain"
+                        class="w-full h-auto object-contain select-none"
                         onerror="this.classList.add('hidden'); document.getElementById('logoFallback').classList.remove('hidden');"
                     />
                     
-                    <!-- Fallback Crest SVG Monogram RS (Muncul otomatis jika file gambar tidak ditemukan) -->
-                    <div id="logoFallback" class="hidden w-44 h-44 sm:w-52 sm:h-52 flex flex-col items-center justify-center">
-                        <svg viewBox="0 0 200 200" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Lingkaran luar emas -->
-                            <circle cx="100" cy="105" r="72" stroke="#C59B48" stroke-width="2.5" stroke-dasharray="360 40"/>
-                            <!-- Sinar matahari di atas -->
-                            <path d="M100 12L103 28H97L100 12Z" fill="#C59B48"/>
-                            <path d="M72 19L81 33L75 36L72 19Z" fill="#C59B48"/>
-                            <path d="M128 19L125 36L119 33L128 19Z" fill="#C59B48"/>
-                            <path d="M50 36L64 46L60 50L50 36Z" fill="#C59B48"/>
-                            <path d="M150 36L140 50L136 46L150 36Z" fill="#C59B48"/>
-                            <!-- Monogram RS -->
-                            <text x="58" y="122" fill="#C59B48" font-family="Cinzel, serif" font-weight="700" font-size="68">R</text>
-                            <text x="102" y="138" fill="#FFFFFF" font-family="Cinzel, serif" font-weight="700" font-size="68">S</text>
-                            <!-- Bintang kecil -->
-                            <path d="M144 68L146 74L152 76L146 78L144 84L142 78L136 76L142 74L144 68Z" fill="#C59B48"/>
+                    <!-- Fallback Crest SVG Monogram RS (Muncul otomatis jika file gambar belum terbaca) -->
+                    <div id="logoFallback" class="hidden w-full py-2 flex flex-col items-center justify-center">
+                        <svg viewBox="0 0 260 190" class="w-56 sm:w-64 h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="130" cy="95" r="64" stroke="#C59B48" stroke-width="2.5" stroke-dasharray="320 35"/>
+                            <path d="M130 12L133 26H127L130 12Z" fill="#C59B48"/>
+                            <path d="M104 18L112 31L107 34L104 18Z" fill="#C59B48"/>
+                            <path d="M156 18L153 34L148 31L156 18Z" fill="#C59B48"/>
+                            <path d="M84 33L97 42L93 46L84 33Z" fill="#C59B48"/>
+                            <path d="M176 33L167 46L163 42L176 33Z" fill="#C59B48"/>
+                            <text x="93" y="110" fill="#C59B48" font-family="Cinzel, serif" font-weight="700" font-size="60">R</text>
+                            <text x="132" y="124" fill="#FFFFFF" font-family="Cinzel, serif" font-weight="700" font-size="60">S</text>
+                            <path d="M168 62L170 67L175 69L170 71L168 76L166 71L161 69L166 67L168 62Z" fill="#C59B48"/>
                         </svg>
                     </div>
                 </div>
             </div>
 
-            <!-- Judul Klub Bergaya Klasik -->
-            <div class="space-y-2">
-                <div class="flex items-center justify-center gap-3">
-                    <span class="h-[1px] w-10 sm:w-16 bg-gradient-to-r from-transparent to-solara-gold"></span>
-                    <p class="font-serif text-xs sm:text-sm tracking-[0.35em] text-solara-gold font-semibold uppercase">
-                        Republic Of
-                    </p>
-                    <span class="h-[1px] w-10 sm:w-16 bg-gradient-to-l from-transparent to-solara-gold"></span>
-                </div>
-                <h1 class="font-serif text-3xl sm:text-5xl font-bold tracking-[0.22em] text-white pl-[0.22em]">
-                    SOLARA
-                </h1>
-                <!-- Ornamen Bintang Bawah -->
-                <div class="flex items-center justify-center gap-3 pt-1">
-                    <span class="h-[1px] w-14 sm:w-24 bg-gradient-to-r from-transparent to-solara-gold/80"></span>
-                    <svg class="w-3.5 h-3.5 text-solara-gold" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
-                    </svg>
-                    <span class="h-[1px] w-14 sm:w-24 bg-gradient-to-l from-transparent to-solara-gold/80"></span>
-                </div>
-            </div>
-
             <!-- Slogan Klub -->
-            <div class="max-w-md mx-auto pt-1">
+            <div class="max-w-md mx-auto">
                 <blockquote class="px-5 py-3.5 rounded-2xl bg-solara-card border border-solara-borderGold text-sm sm:text-base font-medium text-neutral-200 tracking-wide">
                     “Jago boleh, ego tinggi jangan.”
                 </blockquote>
@@ -170,10 +142,9 @@
 
     </main>
 
-    <!-- 5. Footer -->
-    <footer class="border-t border-solara-borderGold py-8 mt-8 text-center px-4">
-        <p class="font-serif text-xs sm:text-sm font-bold tracking-[0.22em] text-white uppercase">REPUBLIC OF SOLARA</p>
-        <p class="text-xs text-neutral-500 mt-1.5">“Jago boleh, ego tinggi jangan”</p>
+    <!-- 5. Footer Minimalis (Tanpa judul besar dobel) -->
+    <footer class="border-t border-solara-borderGold py-7 mt-8 text-center px-4">
+        <p class="text-xs text-neutral-500 tracking-wide">“Jago boleh, ego tinggi jangan.”</p>
     </footer>
 
     <!-- =====================================================================
