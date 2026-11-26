@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPUBLIC OF SOLARA — Badminton Club</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Cinzel (Serif klasik) & Plus Jakarta Sans (UI modern & ringan) -->
+    <title>Republic of Solara — Badminton Club</title>
+    <!-- Google Fonts: Inter & Cinzel -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        serif: ['"Cinzel"', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
                     },
                     colors: {
                         solara: {
@@ -25,9 +24,9 @@
                             card: '#0A0A0A',
                             cardHover: '#121212',
                             gold: '#C59B48',
-                            goldLight: '#E5C158',
+                            goldLight: '#E0BA6B',
                             borderDark: '#1F1F1F',
-                            borderGold: '#2A2315',
+                            borderGold: 'rgba(197, 155, 72, 0.35)',
                         }
                     }
                 }
@@ -35,171 +34,204 @@
         }
     </script>
 </head>
-<body class="bg-solara-black text-white font-sans antialiased selection:bg-solara-gold/30 selection:text-solara-goldLight">
+<body class="bg-solara-black text-white font-sans antialiased selection:bg-solara-gold selection:text-black min-h-screen flex flex-col">
 
-    <!-- 1. Sticky Top Navbar (Bersih tanpa tulisan SOLARA) -->
-    <nav class="sticky top-0 z-40 bg-solara-black border-b border-solara-borderGold">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-            <a href="#" class="flex items-center p-1.5 group" aria-label="Kembali ke atas">
-                <!-- Ikon Bintang Emas Minimalis -->
-                <svg class="w-4 h-4 text-solara-gold group-hover:text-solara-goldLight transition-colors shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M12 1L14.8 9.2L23 12L14.8 14.8L12 23L9.2 14.8L1 12L9.2 9.2L12 1Z"/>
+    <!-- Navbar Minimalis (Tanpa Teks Nama Klub agar tidak dobel dengan logo) -->
+    <header class="sticky top-0 z-40 bg-solara-black/95 border-b border-solara-borderDark">
+        <nav class="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+            <a href="#" aria-label="Beranda" class="inline-flex items-center justify-center p-2 rounded-lg text-solara-gold hover:text-solara-goldLight transition-colors">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
                 </svg>
             </a>
-
-            <div class="flex items-center gap-6 text-xs sm:text-sm font-medium text-neutral-400">
-                <a href="#anggota" class="hover:text-solara-goldLight transition-colors py-2">Anggota</a>
-                <a href="#leaderboard" class="hover:text-solara-goldLight transition-colors py-2">Leaderboard</a>
+            <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm font-medium text-neutral-300">
+                <a href="#anggota" class="px-3 py-2 rounded-lg hover:text-solara-gold transition-colors">Anggota</a>
+                <a href="#leaderboard" class="px-3 py-2 rounded-lg hover:text-solara-gold transition-colors">Leaderboard</a>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <!-- Main Content Container -->
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-14 sm:space-y-20">
+    <!-- Main Content -->
+    <main class="flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-16 space-y-12">
 
-        <!-- 2. Hero Section, Logo & Dynamic Recruitment Banner -->
-        <header class="text-center space-y-6">
-            
-            <!-- Tempat Logo Utama (Ganti ukuran logo di class w-64 sm:w-80 di bawah ini) -->
-            <div class="flex justify-center">
-                <!-- Ganti ukuran logo di sini: ubah w-64 (HP) dan sm:w-80 (Desktop), misal jadi w-72 sm:w-96 -->
-                <div class="relative w-64 sm:w-80 flex items-center justify-center">
-                    <!-- Gambar Logo Klub -->
-                    <img 
-                        id="clubLogoImg"
-                        src="file_000000009690821189f9c36f7102a10e.png" 
-                        alt="Logo Republic of Solara" 
-                        class="w-full h-auto object-contain select-none"
-                        onerror="this.classList.add('hidden'); document.getElementById('logoFallback').classList.remove('hidden');"
-                    />
-                    
-                    <!-- Fallback Crest SVG Monogram RS (Muncul otomatis jika file gambar belum terbaca) -->
-                    <div id="logoFallback" class="hidden w-full py-2 flex flex-col items-center justify-center">
-                        <svg viewBox="0 0 260 190" class="w-56 sm:w-64 h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="130" cy="95" r="64" stroke="#C59B48" stroke-width="2.5" stroke-dasharray="320 35"/>
-                            <path d="M130 12L133 26H127L130 12Z" fill="#C59B48"/>
-                            <path d="M104 18L112 31L107 34L104 18Z" fill="#C59B48"/>
-                            <path d="M156 18L153 34L148 31L156 18Z" fill="#C59B48"/>
-                            <path d="M84 33L97 42L93 46L84 33Z" fill="#C59B48"/>
-                            <path d="M176 33L167 46L163 42L176 33Z" fill="#C59B48"/>
-                            <text x="93" y="110" fill="#C59B48" font-family="Cinzel, serif" font-weight="700" font-size="60">R</text>
-                            <text x="132" y="124" fill="#FFFFFF" font-family="Cinzel, serif" font-weight="700" font-size="60">S</text>
-                            <path d="M168 62L170 67L175 69L170 71L168 76L166 71L161 69L166 67L168 62Z" fill="#C59B48"/>
-                        </svg>
-                    </div>
+        <!-- Hero Section: Logo Utama & Slogan -->
+        <section class="flex flex-col items-center text-center pt-2">
+            <!-- UBAH UKURAN LOGO DI SINI: ganti class "w-64 sm:w-80" (misal jadi "w-72 sm:w-96") -->
+            <div class="w-64 sm:w-80 mx-auto flex items-center justify-center">
+                <img
+                    id="clubLogo"
+                    src="file_000000009690821189f9c36f7102a10e.png"
+                    alt="Logo Republic of Solara"
+                    class="w-full h-auto object-contain select-none"
+                    onerror="this.style.display='none'; document.getElementById('logoFallback').classList.remove('hidden');"
+                />
+
+                <!-- Fallback SVG Crest RS (Otomatis muncul hanya jika file gambar belum terbaca) -->
+                <div id="logoFallback" class="hidden w-56 h-56 mx-auto flex flex-col items-center justify-center">
+                    <svg viewBox="0 0 220 220" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="RS Crest">
+                        <!-- Sun Rays -->
+                        <path d="M110 18L114 38H106L110 18Z" fill="#C59B48"/>
+                        <path d="M84 24L94 42L87 45L84 24Z" fill="#C59B48"/>
+                        <path d="M136 24L133 45L126 42L136 24Z" fill="#C59B48"/>
+                        <path d="M62 38L78 52L72 57L62 38Z" fill="#C59B48"/>
+                        <path d="M158 38L148 57L142 52L158 38Z" fill="#C59B48"/>
+                        <!-- Crest Ring -->
+                        <path d="M72 62C52 76 40 99 40 125C40 163 71 194 110 194C149 194 180 163 180 125C180 99 168 76 148 62" stroke="#C59B48" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M84 62C88 49 98 41 110 41C122 41 132 49 136 62" stroke="#C59B48" stroke-width="2.5" stroke-linecap="round"/>
+                        <!-- Monogram R & S -->
+                        <text x="68" y="135" fill="#C59B48" font-family="Cinzel, serif" font-weight="700" font-size="68">R</text>
+                        <text x="108" y="156" fill="#FFFFFF" font-family="Cinzel, serif" font-weight="700" font-size="68">S</text>
+                        <!-- Star Accent -->
+                        <path d="M148 80L150.5 87.5L158 90L150.5 92.5L148 100L145.5 92.5L138 90L145.5 87.5L148 80Z" fill="#C59B48"/>
+                    </svg>
                 </div>
             </div>
 
             <!-- Slogan Klub -->
-            <div class="max-w-md mx-auto">
-                <blockquote class="px-5 py-3.5 rounded-2xl bg-solara-card border border-solara-borderGold text-sm sm:text-base font-medium text-neutral-200 tracking-wide">
+            <div class="mt-6 w-full max-w-md px-5 py-3.5 rounded-2xl bg-solara-card border border-solara-borderDark">
+                <p class="text-sm sm:text-base font-medium tracking-wide text-neutral-200">
                     “Jago boleh, ego tinggi jangan.”
-                </blockquote>
+                </p>
             </div>
 
-            <!-- Banner Dynamic Recruitment ('DICARI ANGGOTA!') -->
-            <div id="recruitmentBanner" class="max-w-lg mx-auto pt-2">
-                <div class="flex flex-col items-center gap-4 p-5 sm:p-6 rounded-2xl bg-solara-card border border-solara-borderGold">
-                    <span class="px-3 py-1 rounded-md bg-solara-gold text-black text-xs font-extrabold uppercase tracking-wider">
-                        DICARI ANGGOTA!
-                    </span>
-                    <p id="recruitmentText" class="text-xs sm:text-sm text-neutral-300 font-medium">
-                        Tersisa <strong class="text-white">2 Slot Kosong</strong> untuk gabung skuad utama.
-                    </p>
-                    <a id="bannerWaBtn" href="https://wa.me/6281932421812?text=Halo%20Reno%2C%20gw%20mau%20daftar%20gabung%20klub%20Republic%20of%20Solara!" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-solara-gold hover:bg-solara-goldLight active:scale-[0.99] text-black font-bold text-sm transition-colors">
-                        <span>Gabung via WhatsApp</span>
-                    </a>
-                </div>
+            <!-- Dynamic Recruitment Banner (Otomatis hilang saat 4/4 slot terisi) -->
+            <div id="recruitmentBanner" class="mt-6 w-full max-w-md p-5 rounded-2xl bg-solara-card border border-solara-borderGold">
+                <span class="inline-block px-3.5 py-1 rounded-lg bg-solara-gold text-black text-xs font-extrabold tracking-wider uppercase">
+                    Dicari Anggota!
+                </span>
+                <p id="recruitmentText" class="mt-3 text-sm text-neutral-300">
+                    Tersisa <strong class="text-white">2 Slot Kosong</strong> untuk gabung skuad utama.
+                </p>
+                <a
+                    id="bannerWaBtn"
+                    href="https://wa.me/6281932421812"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="mt-4 w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-solara-gold hover:bg-solara-goldLight text-black font-bold text-sm transition-colors"
+                >
+                    <span>Gabung via WhatsApp</span>
+                </a>
             </div>
-        </header>
+        </section>
 
-        <!-- 3. Squad Roster Section (#anggota) -->
-        <section id="anggota" class="space-y-6 scroll-mt-20">
-            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-solara-borderGold pb-4">
+        <!-- Section 1: Squad Roster -->
+        <section id="anggota" class="space-y-5 scroll-mt-20">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-solara-borderDark pb-4">
                 <div>
-                    <h2 class="font-serif text-lg sm:text-xl font-bold tracking-[0.14em] text-white uppercase">SQUAD ROSTER</h2>
-                    <p id="rosterSubtitle" class="text-xs sm:text-sm text-neutral-400 mt-1">Formasi resmi anggota Republic of Solara (2/4 Terisi)</p>
+                    <h2 class="font-serif text-lg sm:text-xl font-bold tracking-wider uppercase text-white">
+                        Squad Roster
+                    </h2>
+                    <p id="rosterSubtitle" class="text-xs sm:text-sm text-neutral-400 mt-1">
+                        Formasi resmi anggota klub (2/4 Terisi)
+                    </p>
                 </div>
                 <span id="rosterBadge" class="text-xs font-semibold text-solara-gold bg-solara-gold/10 border border-solara-gold/30 px-3 py-1.5 rounded-lg self-start sm:self-auto">
                     Open Recruitment
                 </span>
             </div>
 
-            <!-- Grid 4 Kartu Anggota (Diisi otomatis oleh JavaScript) -->
+            <!-- Grid Kartu Anggota (Di-render via JS) -->
             <div id="rosterGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
         </section>
 
-        <!-- 4. Top Leaderboard Section (#leaderboard) -->
-        <section id="leaderboard" class="space-y-6 scroll-mt-20">
-            <div class="border-b border-solara-borderGold pb-4">
-                <h2 class="font-serif text-lg sm:text-xl font-bold tracking-[0.14em] text-white uppercase">TOP LEADERBOARD</h2>
-                <p class="text-xs sm:text-sm text-neutral-400 mt-1">Klasemen peringkat internal klub (Top 1 – 4)</p>
+        <!-- Section 2: Top Leaderboard (1 - 4) -->
+        <section id="leaderboard" class="space-y-5 scroll-mt-20">
+            <div class="border-b border-solara-borderDark pb-4">
+                <h2 class="font-serif text-lg sm:text-xl font-bold tracking-wider uppercase text-white">
+                    Top Leaderboard
+                </h2>
+                <p class="text-xs sm:text-sm text-neutral-400 mt-1">
+                    Klasemen peringkat internal klub (Top 1 – 4)
+                </p>
             </div>
 
-            <!-- Daftar Peringkat 1-4 (Diisi otomatis oleh JavaScript) -->
-            <div id="leaderboardList" class="rounded-2xl bg-solara-card border border-solara-borderGold overflow-hidden divide-y divide-solara-borderDark"></div>
+            <!-- List Klasemen (Di-render via JS) -->
+            <div class="rounded-2xl bg-solara-card border border-solara-borderDark overflow-hidden">
+                <div id="leaderboardList" class="divide-y divide-solara-borderDark"></div>
+            </div>
         </section>
 
     </main>
 
-    <!-- 5. Footer Minimalis (Tanpa judul besar dobel) -->
-    <footer class="border-t border-solara-borderGold py-7 mt-8 text-center px-4">
-        <p class="text-xs text-neutral-500 tracking-wide">“Jago boleh, ego tinggi jangan.”</p>
+    <!-- Footer Minimalis (Tanpa Teks Nama Klub agar bersih) -->
+    <footer class="border-t border-solara-borderDark py-8 px-4 text-center">
+        <div class="inline-flex items-center justify-center text-solara-gold mb-2">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+            </svg>
+        </div>
+        <p class="text-xs text-neutral-500">
+            “Jago boleh, ego tinggi jangan”
+        </p>
     </footer>
 
-    <!-- =====================================================================
-         SCRIPT PENGATURAN DATA & RENDER OTOMATIS (KONFIGURASI TERPISAH)
-         ===================================================================== -->
+    <!-- Konfigurasi & Script Render -->
     <script>
         (function () {
+            // =================================================================
             // 1. KONFIGURASI NOMOR WHATSAPP
+            // =================================================================
             const whatsappNumber = "6281932421812";
             const waMessage = "Halo Reno, gw mau daftar gabung klub Republic of Solara!";
             const waLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waMessage)}`;
 
-            // 2. KONFIGURASI SQUAD ROSTER (4 SLOT ANGGOTA + DESKRIPSI)
-            //    - Isi dengan object { name, role, desc } kalau slot sudah terisi.
-            //    - Isi dengan `null` kalau slot masih kosong (otomatis menghitung sisa slot di banner "DICARI ANGGOTA!").
+            // =================================================================
+            // 2. KONFIGURASI SQUAD ROSTER (4 SLOT ANGGOTA + PP OPSIONAL)
+            //    - avatar: Isi nama file foto (misal "reno.jpg") atau URL gambar.
+            //              Biarkan kosong ("") untuk otomatis pakai huruf inisial depan.
+            //    - Isi dengan `null` jika slot masih kosong (otomatis menghitung
+            //      sisa slot di banner atas dan menghilangkannya saat penuh 4/4).
+            // =================================================================
             const squadRoster = [
                 {
-                    name: "Nathan",
-                    role: "Leader • Attack",
-                    desc: "Type attack dengan unsur defense serta berpikir cepat."
+                    name: "Reno",
+                    role: "Captain / All-Rounder",
+                    desc: "Main taktis, kontrol net rapi, dan penentu tempo permainan.",
+                    avatar: ""
                 },
                 {
-                    name: "Reno",
-                    role: "IT • Smash & Defense",
-                    desc: "Type defense dan attack dengan refleks cepat."
+                    name: "Nathan",
+                    role: "Co-Captain / Smasher",
+                    desc: "Spesialis serangan cepat dari garis belakang dan pertahanan solid.",
+                    avatar: ""
                 },
-                null, // Slot 3 (Kosong) -> Ganti null dengan { name: "...", role: "...", desc: "..." }
-                null  // Slot 4 (Kosong) -> Ganti null dengan { name: "...", role: "...", desc: "..." }
+                null, // Slot 3 (Kosong) -> Ganti null dengan { name: "...", role: "...", desc: "...", avatar: "" }
+                null  // Slot 4 (Kosong) -> Ganti null dengan { name: "...", role: "...", desc: "...", avatar: "" }
             ];
 
-            // 3. KONFIGURASI TOP LEADERBOARD (TERPISAH DARI ROSTER, BEBAS ATUR URUTAN TOP 1 - 4)
-            //    - Isi dengan object { rank, name, note } untuk peringkat yang sudah terisi.
-            //    - Isi dengan `null` jika peringkat tersebut masih belum terisi.
+            // =================================================================
+            // 3. KONFIGURASI TOP LEADERBOARD (TERPISAH DARI SQUAD ROSTER)
+            //    - Bebas atur urutan peringkat Top 1 - 4 dan catatan statusnya
+            //      tanpa mempengaruhi susunan kartu di Squad Roster.
+            // =================================================================
             const leaderboardData = [
                 {
                     rank: 1,
                     name: "Reno",
-                    note: "Peringkat 1 Klub • Defense"
+                    note: "Top 1 Skuad • Unbeaten"
                 },
                 {
                     rank: 2,
                     name: "Nathan",
-                    note: "Peringkat 2 Klub • Attack"
+                    note: "Top 2 Skuad • Konsisten"
                 },
-                null, // Top 3 (Belum terisi) -> Ganti null dengan { rank: 3, name: "...", note: "..." }
-                null  // Top 4 (Belum terisi) -> Ganti null dengan { rank: 4, name: "...", note: "..." }
+                {
+                    rank: 3,
+                    name: "Slot Kosong",
+                    note: "Menunggu penantang berikutnya"
+                },
+                {
+                    rank: 4,
+                    name: "Slot Kosong",
+                    note: "Menunggu penantang berikutnya"
+                }
             ];
 
             function renderSolaraClub() {
-                // Hitung slot terisi & kosong berdasarkan `squadRoster`
                 const totalSlots = squadRoster.length;
                 const filledCount = squadRoster.filter(member => member && member.name && member.name.trim() !== "").length;
                 const emptyCount = totalSlots - filledCount;
 
-                // Elemen DOM
                 const recruitmentBanner = document.getElementById("recruitmentBanner");
                 const recruitmentText = document.getElementById("recruitmentText");
                 const bannerWaBtn = document.getElementById("bannerWaBtn");
@@ -208,32 +240,41 @@
                 const rosterGrid = document.getElementById("rosterGrid");
                 const leaderboardList = document.getElementById("leaderboardList");
 
-                // Update Link WhatsApp Banner
+                // Update tombol WhatsApp di banner
                 if (bannerWaBtn) {
                     bannerWaBtn.href = waLink;
                 }
 
-                // Update Subtitle Roster
+                // Update teks jumlah slot terisi
                 if (rosterSubtitle) {
-                    rosterSubtitle.textContent = `Formasi resmi anggota Republic of Solara (${filledCount}/${totalSlots} Terisi)`;
+                    rosterSubtitle.textContent = `Formasi resmi anggota klub (${filledCount}/${totalSlots} Terisi)`;
                 }
 
-                // Tampilkan atau Sembunyikan Banner Rekrutmen & Badge secara dinamis
+                // Tampilkan atau sembunyikan banner "Dicari Anggota!" secara otomatis
                 if (emptyCount > 0) {
-                    if (recruitmentBanner) recruitmentBanner.classList.remove("hidden");
+                    if (recruitmentBanner) {
+                        recruitmentBanner.style.display = "block";
+                        recruitmentBanner.classList.remove("hidden");
+                    }
                     if (recruitmentText) {
                         recruitmentText.innerHTML = `Tersisa <strong class="text-white">${emptyCount} Slot Kosong</strong> untuk gabung skuad utama.`;
                     }
                     if (rosterBadge) {
-                        rosterBadge.classList.remove("hidden");
                         rosterBadge.textContent = "Open Recruitment";
+                        rosterBadge.className = "text-xs font-semibold text-solara-gold bg-solara-gold/10 border border-solara-gold/30 px-3 py-1.5 rounded-lg self-start sm:self-auto";
                     }
                 } else {
-                    if (recruitmentBanner) recruitmentBanner.classList.add("hidden");
-                    if (rosterBadge) rosterBadge.classList.add("hidden");
+                    if (recruitmentBanner) {
+                        recruitmentBanner.style.display = "none";
+                        recruitmentBanner.classList.add("hidden");
+                    }
+                    if (rosterBadge) {
+                        rosterBadge.textContent = "Full Squad";
+                        rosterBadge.className = "text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-lg self-start sm:self-auto";
+                    }
                 }
 
-                // Render Kartu Squad Roster (4 Slot) beserta Role & Deskripsi
+                // Render 4 Kartu Squad Roster
                 if (rosterGrid) {
                     let rosterHTML = "";
                     squadRoster.forEach((member, index) => {
@@ -242,16 +283,37 @@
 
                         if (isFilled) {
                             const isCaptain = index === 0;
+                            const initial = member.name.trim().charAt(0).toUpperCase();
+                            const hasAvatar = member.avatar && member.avatar.trim() !== "";
                             const roleText = member.role && member.role.trim() !== "" ? member.role : "Squad Member";
                             const descText = member.desc && member.desc.trim() !== "" ? member.desc : "";
+
+                            // Avatar lingkaran emas: pakai foto jika diisi, atau otomatis inisial huruf depan
+                            const avatarHTML = hasAvatar
+                                ? `
+                                    <div class="relative w-12 h-12 rounded-full border border-solara-gold overflow-hidden shrink-0 bg-neutral-900">
+                                        <img
+                                            src="${member.avatar.trim()}"
+                                            alt="PP ${member.name}"
+                                            class="w-full h-full object-cover"
+                                            onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                                        />
+                                        <div class="hidden w-full h-full ${isCaptain ? 'bg-solara-gold text-black' : 'bg-neutral-900 text-solara-gold'} font-serif font-bold text-base flex items-center justify-center">
+                                            ${initial}
+                                        </div>
+                                    </div>
+                                `
+                                : `
+                                    <div class="w-12 h-12 rounded-full border border-solara-gold ${isCaptain ? 'bg-solara-gold text-black' : 'bg-neutral-900 text-solara-gold'} font-serif font-bold text-base flex items-center justify-center shrink-0">
+                                        ${initial}
+                                    </div>
+                                `;
 
                             rosterHTML += `
                                 <div class="p-4 sm:p-5 rounded-2xl bg-solara-card border ${isCaptain ? 'border-solara-gold/50' : 'border-solara-borderDark'} flex flex-col justify-between gap-3.5">
                                     <div class="flex items-start justify-between gap-3">
                                         <div class="flex items-center gap-3.5 min-w-0">
-                                            <div class="w-11 h-11 rounded-xl ${isCaptain ? 'bg-solara-gold text-black' : 'bg-neutral-900 text-solara-gold border border-solara-borderGold'} font-serif font-bold text-base flex items-center justify-center shrink-0">
-                                                ${member.name.charAt(0).toUpperCase()}
-                                            </div>
+                                            ${avatarHTML}
                                             <div class="min-w-0">
                                                 <span class="text-[11px] font-semibold uppercase tracking-wider text-solara-gold/90 block truncate">
                                                     Slot #${slotNum} • ${roleText}
@@ -277,21 +339,21 @@
                             rosterHTML += `
                                 <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="group p-4 sm:p-5 rounded-2xl bg-solara-card hover:bg-solara-cardHover border border-dashed border-solara-borderGold hover:border-solara-gold transition-colors flex items-center justify-between gap-3">
                                     <div class="flex items-center gap-3.5 min-w-0">
-                                        <div class="w-11 h-11 rounded-xl bg-neutral-950 border border-solara-borderDark text-neutral-600 group-hover:text-solara-gold group-hover:border-solara-gold/40 font-serif font-bold text-base flex items-center justify-center shrink-0 transition-colors">
-                                            ?
+                                        <div class="w-12 h-12 rounded-full bg-neutral-950 border border-solara-borderDark text-neutral-500 group-hover:text-solara-gold group-hover:border-solara-gold/50 font-sans font-bold text-lg flex items-center justify-center shrink-0 transition-colors">
+                                            +
                                         </div>
                                         <div class="min-w-0">
                                             <span class="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 block">
                                                 Slot #${slotNum}
                                             </span>
-                                            <h3 class="text-base sm:text-lg font-semibold text-neutral-400 group-hover:text-white transition-colors truncate">
+                                            <h3 class="text-base sm:text-lg font-semibold text-neutral-300 group-hover:text-white transition-colors truncate">
                                                 Slot Kosong
                                             </h3>
-                                            <p class="text-xs text-neutral-600 mt-0.5 truncate">Terbuka untuk pemain baru</p>
+                                            <p class="text-xs text-neutral-500 mt-0.5 truncate">Terbuka untuk anggota baru</p>
                                         </div>
                                     </div>
                                     <span class="text-xs font-bold text-solara-gold group-hover:text-solara-goldLight shrink-0">
-                                        + Daftar
+                                        + Daftar Sekarang
                                     </span>
                                 </a>
                             `;
@@ -300,39 +362,46 @@
                     rosterGrid.innerHTML = rosterHTML;
                 }
 
-                // Render Top Leaderboard (Rank 1 - 4) secara independen dari `leaderboardData`
+                // Render Top Leaderboard (Rank 1 - 4)
                 if (leaderboardList) {
                     let leaderboardHTML = "";
                     leaderboardData.forEach((entry, index) => {
                         const rank = entry && entry.rank ? entry.rank : index + 1;
-                        const isFilled = entry && entry.name && entry.name.trim() !== "";
+                        const nameVal = entry && entry.name ? entry.name.trim() : "";
+                        const isEmptySlot = !nameVal || nameVal.toLowerCase() === "slot kosong";
 
-                        // Gaya Lencana Rank 1, 2, dan 3-4
                         let rankBadgeHTML = "";
                         let rowExtraClass = "";
 
                         if (rank === 1) {
-                            rowExtraClass = "bg-solara-gold/[0.06]";
+                            rowExtraClass = "bg-solara-gold/[0.08]";
                             rankBadgeHTML = `
                                 <div class="w-9 h-9 rounded-xl bg-solara-gold text-black font-serif font-extrabold text-sm flex items-center justify-center shrink-0" title="Top 1">
                                     #1
                                 </div>
                             `;
                         } else if (rank === 2) {
+                            rowExtraClass = "bg-solara-gold/[0.03]";
                             rankBadgeHTML = `
                                 <div class="w-9 h-9 rounded-xl bg-neutral-200 text-black font-serif font-extrabold text-sm flex items-center justify-center shrink-0" title="Top 2">
                                     #2
                                 </div>
                             `;
+                        } else if (rank === 3) {
+                            rankBadgeHTML = `
+                                <div class="w-9 h-9 rounded-xl bg-amber-800/40 border border-amber-700/50 text-amber-300 font-serif font-bold text-sm flex items-center justify-center shrink-0" title="Top 3">
+                                    #3
+                                </div>
+                            `;
                         } else {
                             rankBadgeHTML = `
-                                <div class="w-9 h-9 rounded-xl bg-neutral-900 border border-solara-borderDark text-neutral-500 font-serif font-bold text-sm flex items-center justify-center shrink-0">
+                                <div class="w-9 h-9 rounded-xl bg-neutral-900 border border-solara-borderDark text-neutral-400 font-serif font-bold text-sm flex items-center justify-center shrink-0">
                                     #${rank}
                                 </div>
                             `;
                         }
 
-                        if (isFilled) {
+                        if (!isEmptySlot) {
                             const noteText = entry.note && entry.note.trim() !== "" ? entry.note : `Peringkat ${rank} Klub`;
 
                             leaderboardHTML += `
@@ -340,7 +409,7 @@
                                     <div class="flex items-center gap-3.5 min-w-0">
                                         ${rankBadgeHTML}
                                         <div class="min-w-0">
-                                            <p class="text-sm sm:text-base font-bold text-white truncate">${entry.name}</p>
+                                            <p class="text-sm sm:text-base font-bold text-white truncate">${nameVal}</p>
                                             <p class="text-xs text-neutral-400 truncate">${noteText}</p>
                                         </div>
                                     </div>
@@ -359,18 +428,19 @@
                                 </div>
                             `;
                         } else {
+                            const noteText = entry && entry.note ? entry.note : "Menunggu penantang berikutnya";
                             leaderboardHTML += `
                                 <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="px-4 sm:px-6 py-4 flex items-center justify-between gap-4 hover:bg-solara-cardHover transition-colors group">
                                     <div class="flex items-center gap-3.5 min-w-0">
                                         ${rankBadgeHTML}
                                         <div class="min-w-0">
-                                            <p class="text-sm sm:text-base font-medium text-neutral-500 group-hover:text-neutral-300 transition-colors truncate">
-                                                Belum Terisi
+                                            <p class="text-sm sm:text-base font-medium text-neutral-400 group-hover:text-white transition-colors truncate">
+                                                Slot Kosong
                                             </p>
-                                            <p class="text-xs text-neutral-600">Slot peringkat #${rank} tersedia</p>
+                                            <p class="text-xs text-neutral-600 truncate">${noteText}</p>
                                         </div>
                                     </div>
-                                    <span class="text-xs font-semibold text-solara-gold/80 group-hover:text-solara-goldLight shrink-0">
+                                    <span class="text-xs font-semibold text-solara-gold group-hover:text-solara-goldLight shrink-0">
                                         Gabung →
                                     </span>
                                 </a>
@@ -381,7 +451,6 @@
                 }
             }
 
-            // Jalankan langsung saat script terbaca maupun saat DOM siap
             if (document.readyState === "loading") {
                 document.addEventListener("DOMContentLoaded", renderSolaraClub);
             } else {
